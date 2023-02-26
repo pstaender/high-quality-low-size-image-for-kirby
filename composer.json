@@ -1,7 +1,7 @@
 {
     "name": "pstaender/high-quality-low-size-image-for-kirby",
     "description": "Converts images to low file size high quality images in webp and avif",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "type": "kirby-plugin",
     "license": "MIT",
     "authors": [
@@ -11,9 +11,13 @@
         }
     ],
     "require": {
-        "getkirby/cms": "^3"
+        "getkirby/cms": "^3",
+        "getkirby/composer-installer": "^1.1"
     },
     "extra": {
 		"installer-name": "high-quality-low-size-image"
-	}
+	},
+    "config": {
+        "optimize-autoloader": true
+    }
 }

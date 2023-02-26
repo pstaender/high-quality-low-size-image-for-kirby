@@ -7,10 +7,14 @@
 ## Usage
 
 ```php
-<?= $page->image()->toFile()->highQualityLowSize() ?>
+<?= $page->someImage()->toFile()->highQualityLowSize() ?>
 ```
 
-Optional: To use it also in kirby text (via image tag), set in `config.php`:
+Now your image will be a webp or avif instead of jpg/png/etc 🚀. Webp will be the format if gdlib, avif if imagemagick is enabled via thumb driver. It also checks that the browser supports webp and avif via the Accept header and return the original file if not.
+
+## Optional: Image Tag
+
+To use it also in kirby text (via image tag) set in `config.php`:
 
 ```php
 [

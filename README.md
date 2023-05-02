@@ -18,7 +18,7 @@ To use it also in kirby text (via image tag) set in `config.php`:
 
 ```php
 [
-    'high_quality_and_low_size_image' [
+    'high_quality_and_low_size_image' => [
         'image_tag' => true,
     ],
 ]

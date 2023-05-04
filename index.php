@@ -58,9 +58,10 @@ Kirby::plugin('pstaender/high-quality-low-size-image', [
  */
 
 if (option('high_quality_and_low_size_image.image_tag')) {
-    $originalImageTag = Kirby\Text\KirbyTag::$types['image'];
+    $originalImageTag ??= Kirby\Text\KirbyTag::$types['image'];
 
     Kirby\Text\KirbyTag::$types['image'] = [
+        'attr' => $originalImageTag['attr'],
         'html' => function ($tag) use ($originalImageTag) {
             if ($tag->file = $tag->file($tag->value)) {
                 $url     = $tag->file->url();

@@ -1,4 +1,4 @@
-# Converts images to low file size high quality images in webp and avif
+# Kirby Plugin: Converts images to low file size high quality images in webp and avif
 
 ## Install
 
@@ -10,7 +10,11 @@
 <?= $page->someImage()->toFile()->highQualityLowSize() ?>
 ```
 
-Now your image will be a webp or avif instead of jpg/png/etc 🚀. Webp will be the format if gdlib, avif if imagemagick is enabled via thumb driver. It also checks that the browser supports webp and avif via the Accept header and return the original file if not.
+Now your image will be a webp or avif instead of jpg/png/etc 🚀
+
+Webp will be the format if gdlib is available, avif if imagemagick is enabled via thumb driver.
+
+It also checks that the browser supports webp and avif via the accept header and returns the original file if not supported.
 
 ## Optional: Image Tag
 

@@ -23,9 +23,20 @@ function high_quality_and_low_size_image(File $file)
     }
 
     $requestSupports = function ($mime) {
-        return str_contains(strtolower(
+        $accepted = str_contains(strtolower(
             kirby()->request()->headers()['Accept'] ?? ''
         ), strtolower($mime));
+        if ($accepted) {
+            return true;
+        }
+
+        // safari and firefox support webp (avif only on newer safari 16+ and newer firefox 93+), but no explicit version checking here (would exceed functionality here)
+        $userAgent = kirby()->request()->headers()['User-Agent'] ?? null;
+        if ($userAgent && str_contains($mime, 'webp') && (str_contains(strtolower($userAgent), 'safari') ||  str_contains(strtolower($userAgent), 'firefox'))) {
+            return true;
+        }
+
+        return false;
     };
 
     $format = option('high_quality_and_low_size_image.format');

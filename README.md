@@ -1,4 +1,4 @@
-# Kirby Plugin: Converts images to low file size high quality images in webp and avif
+# Kirby plugin that converts images to low file-size and high-quality images in avif and webp
 
 ## Install
 

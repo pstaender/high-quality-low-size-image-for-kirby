@@ -31,7 +31,7 @@ function high_quality_and_low_size_image(File $file)
     $format = option('high_quality_and_low_size_image.format');
 
     if (empty($format)) {
-        // avif is a bit smaller by "equal" quality 
+        // avif is a bit smaller by "equal" quality , so prefer that
         if ($requestSupports('image/avif')) {
             $format = 'avif';
         }
@@ -69,9 +69,10 @@ Kirby::plugin('pstaender/high-quality-low-size-image', [
  */
 
 if (option('high_quality_and_low_size_image.image_tag')) {
-    $originalImageTag = Kirby\Text\KirbyTag::$types['image'];
+    $originalImageTag ??= Kirby\Text\KirbyTag::$types['image'];
 
     Kirby\Text\KirbyTag::$types['image'] = [
+        'attr' => $originalImageTag['attr'],
         'html' => function ($tag) use ($originalImageTag) {
             if ($tag->file = $tag->file($tag->value)) {
                 $url     = $tag->file->url();

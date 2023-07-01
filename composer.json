@@ -1,7 +1,7 @@
 {
     "name": "pstaender/high-quality-low-size-image-for-kirby",
     "description": "Converts images to low file size high quality images in webp and avif",
-    "version": "0.0.5",
+    "version": "0.0.8",
     "type": "kirby-plugin",
     "license": "MIT",
     "authors": [

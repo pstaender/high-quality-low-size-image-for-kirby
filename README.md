@@ -28,6 +28,18 @@ To use it also in kirby text (via image tag) set in `config.php`:
 ]
 ```
 
+You can exclude specific image formats from encoding, by default `gif`, `webp` and `avif` are excluded. To set your own rules or to simply force re-encoding every file (by defining an empty array), set the values here:
+
+```php
+[
+    'high_quality_and_low_size_image' => [
+        'excluded_image_formats' => [
+            // 'avif', 'webp', …
+        ],
+    ],
+]
+```
+
 ## License
 
 MIT

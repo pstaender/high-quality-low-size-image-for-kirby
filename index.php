@@ -8,6 +8,20 @@ function high_quality_and_low_size_image(File $file)
         return $file;
     }
 
+    $excludeFormats = option('high_quality_and_low_size_image.excluded_image_formats') ?: ['gif', 'webp', 'avid'];
+    $excludeFormats = array_map(function($format) {
+        return "image/$format";
+    }, $excludeFormats);
+    
+    if (in_array($file->mime(), $excludeFormats)) {
+        return $file;
+    }
+
+    // abort if neither gdlib nor imagick is available
+    if (!function_exists('gd_info') && !extension_loaded('imagick')) {
+        return $file;
+    }
+
     $requestSupports = function ($mime) {
         return str_contains(strtolower(
             kirby()->request()->headers()['Accept'] ?? ''
@@ -16,26 +30,23 @@ function high_quality_and_low_size_image(File $file)
 
     $format = option('high_quality_and_low_size_image.format');
 
-    /* To use aviv, ensure Imagick is installed and set in config.php:
-        [
-        'thumbs' => [
-            'driver' => 'im',
-        ],
-        'high_quality_and_low_size_image' => [
-            'format' => 'avif',
-        ]
-    */
-
     if (empty($format)) {
-        if ($requestSupports('image/webp')) {
-            $format = 'webp';
-        } else if ($requestSupports('image/avif')) {
-            // why is avif 2nd choice? It's not supported in PHP/lib-side. See: https://github.com/claviska/SimpleImage/issues/260
+        // avif is a bit smaller by "equal" quality 
+        if ($requestSupports('image/avif')) {
             $format = 'avif';
+        }
+        else if ($requestSupports('image/webp')) {
+            $format = 'webp';
         }
     }
 
-    // TODO: check that php can create avif/webp (gd|im)
+    // we check for avif support if gd is enabled
+    if ($format === 'avif' && function_exists('gd_info')) {
+        if (!(gd_info()['AVIF Support'] ?? null)) {
+            $format = 'webp';
+        }
+    }
+
     $imageSize = $file->dimensions()->width() * $file->dimensions()->height();
     // is between 79 and 22
     $quality = round((100 * ((pi() / 2) + atan(((- ($imageSize / 100000) * 0.5) - 40) / 100)) / (3)) * 2);
@@ -58,10 +69,9 @@ Kirby::plugin('pstaender/high-quality-low-size-image', [
  */
 
 if (option('high_quality_and_low_size_image.image_tag')) {
-    $originalImageTag ??= Kirby\Text\KirbyTag::$types['image'];
+    $originalImageTag = Kirby\Text\KirbyTag::$types['image'];
 
     Kirby\Text\KirbyTag::$types['image'] = [
-        'attr' => $originalImageTag['attr'],
         'html' => function ($tag) use ($originalImageTag) {
             if ($tag->file = $tag->file($tag->value)) {
                 $url     = $tag->file->url();

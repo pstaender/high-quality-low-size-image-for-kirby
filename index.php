@@ -8,7 +8,7 @@ function high_quality_and_low_size_image(File $file)
         return $file;
     }
 
-    $excludeFormats = option('high_quality_and_low_size_image.excluded_image_formats') ?: ['gif', 'webp', 'avid'];
+    $excludeFormats = option('high_quality_and_low_size_image.excluded_image_formats') ?: ['gif', 'webp', 'avif'];
     $excludeFormats = array_map(function($format) {
         return "image/$format";
     }, $excludeFormats);
